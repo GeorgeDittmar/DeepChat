@@ -9,8 +9,8 @@ class DialoGPT(AbstractModel):
        self.tokenizer = AutoTokenizer.from_pretrained(model)
 
 
-    def predict(self, chat_history):
-        NotImplementedError()
+    def predict_bot_resp(self, chat_history_ids):
+        return self.model.generate(chat_history_ids)
 
     def fine_tune(self, data):
-        NotImplementedError()
+        raise NotImplementedError()
