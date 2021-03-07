@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
+
 class AbstractModel(ABC):
-        
+
     """
         Base class for the model object abstraction
     """
@@ -12,4 +13,3 @@ class AbstractModel(ABC):
     @abstractmethod
     def fine_tune(self, data):
         raise NotImplementedError()
-    

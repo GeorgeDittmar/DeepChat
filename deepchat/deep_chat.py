@@ -1,3 +1,4 @@
 
 class DeepChat(object):
-    pass
+    def __init__(self, model, hardware) -> None:
+        super().__init__()
