@@ -14,7 +14,7 @@ class DialoGPT(AbstractModel):
         self.top_k = top_k
         self.num_beams = num_beams
 
-    def next_utterance(self, chat_history_ids, top_k):
+    def next_utterance(self, chat_history_ids):
         return self.model.generate(chat_history_ids,
                                    max_length=self.max_sequence_len,
                                    top_k=self.top_k,
