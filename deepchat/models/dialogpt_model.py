@@ -1,4 +1,5 @@
 import torch
+
 from deepchat.models.abstract_model import AbstractModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -24,7 +25,7 @@ class DialoGPT(AbstractModel):
 
         return torch.device(device)
 
-    def next_utterance(self, chat_history_ids):
+    def predict(self, chat_history_ids):
         return self.model.generate(chat_history_ids,
                                    max_length=self.max_sequence_len,
                                    top_k=self.top_k,
