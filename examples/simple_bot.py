@@ -1,4 +1,4 @@
 
 from deepchat import DeepChat
 
-DeepChat("", device_type="cuda")
+DeepChat(None, device_type="cuda")

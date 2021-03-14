@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class AbstractModel(ABC):
 
     """
-        Base class for the model object abstraction
+        Base abstract class for the model
     """
     @abstractmethod
     def predict(self, chat_history):

@@ -1,5 +1,5 @@
 import torch
-
+import logging
 from deepchat.models.abstract_model import AbstractModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -20,12 +20,20 @@ class DialoGPT(AbstractModel):
 
         if device == "cuda":
             if not torch.cuda.is_available():
-                print("Cuda not available. Defaulting to CPU.")
+                logging.info("Cuda not available. Defaulting to CPU.")
                 device = "cpu"
 
         return torch.device(device)
 
+    def get_tokenizer(self):
+        return self.tokenizer
+
+    def get_model(self):
+        return self.model
+
     def predict(self, chat_history_ids):
+
+        # encode the input ids
         return self.model.generate(chat_history_ids,
                                    max_length=self.max_sequence_len,
                                    top_k=self.top_k,
