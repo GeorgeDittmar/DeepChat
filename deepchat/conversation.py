@@ -15,10 +15,12 @@ class Conversation(object):
         self.model = model
 
     def start(self):
+        """Begins a chat converstion with the selected model"""
+
         while True:
             user_in = input("User:")
             # check if its any commands
-            bot_response = self.model.predict(self.chat_history)
+            bot_response = self.model.predict(user_in, self.chat_history)
 
     def clear_history(self):
         pass

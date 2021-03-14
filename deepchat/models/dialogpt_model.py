@@ -31,10 +31,19 @@ class DialoGPT(AbstractModel):
     def get_model(self):
         return self.model
 
-    def predict(self, chat_history_ids):
+    def predict(self, user_input, chat_history, turn):
+        """
+            Takes user input with the chat history and runs next response generation on the model
+        """
+
+        user_input_ids = self.tokenizer.encode(
+            user_input + self.tokenizer.eos_token, return_tensors='pt')
+
+        input_ids = torch.cat(
+            [chat_history, user_input_ids], dim=-1) if turn > 0 else user_input_ids
 
         # encode the input ids
-        return self.model.generate(chat_history_ids,
+        return self.model.generate(input_ids,
                                    max_length=self.max_sequence_len,
                                    top_k=self.top_k,
                                    do_sample=True,
