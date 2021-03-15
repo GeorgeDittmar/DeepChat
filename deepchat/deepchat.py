@@ -9,6 +9,8 @@ from deepchat.models.dialogpt_model import DialoGPT
 
 class DeepChat(object):
 
+    """High level wrapper object that handles the setup and conversation with a huggigface chatbot model"""
+
     MODELS_SUPPORTED = ['dialogpt']
     MODELS_DICT = {MODELS_SUPPORTED[0]: "microsoft/dialogpt"}
 
@@ -23,6 +25,7 @@ class DeepChat(object):
         self.conversation: Conversation = Conversation()
 
         self.logger = logging.getLogger(__name__)
+        print("You can end a convesation by typing /end")
 
     def __load_model(self, model: str):
         # check that the model defined is one thats supported
@@ -38,6 +41,22 @@ class DeepChat(object):
 
     def run(self):
         """ 
-            Begins a convestaion with the model
+            Begins a convestaion with the specified chatbot model
         """
-        self.conversation.start()
+        while True:
+            user_in = input()
+
+            # check if its any commands
+            if user_in.lower() == "/end":
+                self.chat_history.append("Ending conversation. Goodbye...")
+                break
+
+            bot_response = self.model.predict(user_in, self.chat_history)
+            print(f"Bot: {bot_response}")
+
+    def new_conversation(self):
+        """Begins a completely new conversation overwriting the old one"""
+        self.conversation = Conversation()
+
+    def get_converstaion(self):
+        return self.conversation

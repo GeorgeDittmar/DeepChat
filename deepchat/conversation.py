@@ -14,13 +14,23 @@ class Conversation(object):
         self.bot_chat_history = []
         self.model = model
 
-    def start(self):
-        """Begins a chat converstion with the selected model"""
-
-        while True:
-            user_in = input("User:")
-            # check if its any commands
-            bot_response = self.model.predict(user_in, self.chat_history)
-
     def clear_history(self):
-        pass
+        self.chat_history = []
+        self.bot_chat_history = []
+        self.user_chat_history = []
+
+    def get_current_turn(self):
+        return self.turns
+
+    def set_turn(self, turn):
+        self.chat_turns = turn
+
+    def next_turn(self, user_input):
+        """
+        start next turn of the conversation    
+        """
+
+        self.chat_turns += 1
+
+    def get_history(self):
+        return self.chat_history

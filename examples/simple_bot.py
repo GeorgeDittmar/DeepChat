@@ -1,4 +1,4 @@
 
 from deepchat import DeepChat
 
-DeepChat("dialogpt", device_type="cuda")
+dc = DeepChat("dialogpt", device_type="cuda")

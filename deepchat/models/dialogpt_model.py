@@ -1,6 +1,9 @@
 import torch
 import logging
+
+from deepchat.conversation import Conversation
 from deepchat.models.abstract_model import AbstractModel
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
@@ -31,7 +34,7 @@ class DialoGPT(AbstractModel):
     def get_model(self):
         return self.model
 
-    def predict(self, user_input, chat_history, turn):
+    def predict(self, user_input, conversation: Conversation):
         """
             Takes user input with the chat history and runs next response generation on the model
         """
@@ -40,7 +43,7 @@ class DialoGPT(AbstractModel):
             user_input + self.tokenizer.eos_token, return_tensors='pt')
 
         input_ids = torch.cat(
-            [chat_history, user_input_ids], dim=-1) if turn > 0 else user_input_ids
+            [conversation.get_chat_history(), user_input_ids], dim=-1) if conversation.get_turn() > 0 else user_input_ids
 
         # encode the input ids
         return self.model.generate(input_ids,
@@ -54,4 +57,4 @@ class DialoGPT(AbstractModel):
         """
             Future work to expose the ability to finetune the pretrained model
         """
-        raise NotImplementedError()
+        raise NotImplementedError("This functionality is not implemented yet")
