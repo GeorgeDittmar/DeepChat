@@ -7,17 +7,17 @@ class Conversation(object):
         Class to contain all the information around a conversation
     """
 
-    def __init__(self, model) -> None:
+    def __init__(self) -> None:
         self.chat_turns = 0
         self.chat_history = []
         self.user_chat_history = []
         self.bot_chat_history = []
-        self.model = model
 
     def clear_history(self):
+        self.chat_turns = 0
         self.chat_history = []
-        self.bot_chat_history = []
         self.user_chat_history = []
+        self.bot_chat_history = []
 
     def get_current_turn(self):
         return self.turns
@@ -25,11 +25,11 @@ class Conversation(object):
     def set_turn(self, turn):
         self.chat_turns = turn
 
-    def next_turn(self, user_input):
+    def add_turn(self, chat_turn):
         """
-        start next turn of the conversation    
+        Add current turn to conversation history.
         """
-
+        self.chat_history.extend(chat_turn)
         self.chat_turns += 1
 
     def get_history(self):
