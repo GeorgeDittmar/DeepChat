@@ -50,27 +50,26 @@ class DeepChat(object):
         return DeepChat.MODELS_DICT[model] + "-" + model_size
 
     def run(self):
-        """ Begins a convestaion with the specified chatbot model """
+        """ Begins a conversation with the specified chatbot model """
         while True:
-            user_in = input(">> ")
+            user_in = input(">>")
 
             # check if its any commands
             if user_in.lower() == "/end":
-                self.conversation.chat_history.append(
-                    "Ending conversation. Goodbye...")
+                print("Ending conversation. Goodbye...")
                 break
 
-            bot_response = self.model.predict(
+            bot_response_ids, bot_response = self.model.predict(
                 user_in, self.conversation)
+
+            self.conversation.update_conversation(bot_response_ids)
 
             print(f"Bot: {bot_response}")
 
             # create tuple of user_in and bot_response and save it to the conversation
-            self.conversation.add_turn((user_in, bot_response))
-
     def new_conversation(self):
         """Begins a completely new conversation overwriting the old one"""
-        self.conversation = Conversation()
+        return Conversation()
 
-    def get_converstaion(self):
+    def get_conversation(self):
         return self.conversation

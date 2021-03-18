@@ -1,5 +1,6 @@
 import torch
 import logging
+import transformers
 
 from deepchat.conversation import Conversation
 from deepchat.models.abstract_model import AbstractModel
@@ -10,6 +11,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 class DialoGPT(AbstractModel):
 
     def __init__(self, device_type, model, max_squence_len=1024, top_k=1, top_p=.8, num_beams=5):
+        transformers.logging.set_verbosity_error()
         self.device_type = self.__get_device(device_type)
         self.model = AutoModelForCausalLM.from_pretrained(
             model).to(self.device_type)
@@ -28,30 +30,36 @@ class DialoGPT(AbstractModel):
 
         return torch.device(device)
 
+    def __decode_bot_response(self, bot_output, input_ids):
+        """decodes the output from the model"""
+        return self.tokenizer.decode(bot_output[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
+
     def get_tokenizer(self):
         return self.tokenizer
 
     def get_model(self):
         return self.model
 
-    def predict(self, user_input, conversation: Conversation):
+    def predict(self, user_input, conversation):
         """
             Takes user input with the chat history and runs next response generation on the model
         """
-
         user_input_ids = self.tokenizer.encode(
             user_input + self.tokenizer.eos_token, return_tensors='pt')
 
         input_ids = torch.cat(
-            [conversation.get_chat_history(), user_input_ids], dim=-1) if conversation.get_turn() > 0 else user_input_ids
+            [conversation.get_history(), user_input_ids], dim=-1) if conversation.get_current_turn() > 0 else user_input_ids
 
-        # encode the input ids
-        return self.model.generate(input_ids,
-                                   max_length=self.max_sequence_len,
-                                   top_k=self.top_k,
-                                   do_sample=True,
-                                   top_p=self.top_p,
-                                   num_beams=self.num_beams)
+        bot_output_ids = self.model.generate(input_ids,
+                                             max_length=self.max_sequence_len,
+                                             top_k=self.top_k,
+                                             do_sample=True,
+                                             top_p=self.top_p,
+                                             num_beams=self.num_beams)
+        bot_response_decoded = self.__decode_bot_response(
+            bot_output_ids, input_ids)
+
+        return (bot_output_ids, bot_response_decoded)
 
     def fine_tune(self, data):
         """

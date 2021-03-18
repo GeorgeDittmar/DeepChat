@@ -9,7 +9,7 @@ class Conversation(object):
 
     def __init__(self) -> None:
         self.chat_turns = 0
-        self.chat_history = []
+        self.chat_history = None
         self.user_chat_history = []
         self.bot_chat_history = []
 
@@ -20,17 +20,18 @@ class Conversation(object):
         self.bot_chat_history = []
 
     def get_current_turn(self):
-        return self.turns
+        return self.chat_turns
 
     def set_turn(self, turn):
         self.chat_turns = turn
 
-    def add_turn(self, chat_turn):
+    def update_conversation(self, chat_turn_ids):
         """
-        Add current turn to conversation history.
+        Set the chat_history to the tensor of chat history id's
         """
-        self.chat_history.extend(chat_turn)
+        self.chat_history = chat_turn_ids
         self.chat_turns += 1
 
     def get_history(self):
+        """returns the encoded tensor of the chat history ids"""
         return self.chat_history
