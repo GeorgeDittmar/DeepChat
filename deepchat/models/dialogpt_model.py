@@ -13,6 +13,7 @@ class DialoGPT(AbstractModel):
     def __init__(self, device_type, model, max_squence_len=1024, top_k=1, top_p=.8, num_beams=5):
         # dont want all the huggingface boilerplate logging to surface in the output
         transformers.logging.set_verbosity_error()
+
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.INFO)
 
