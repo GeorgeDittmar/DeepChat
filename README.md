@@ -3,7 +3,7 @@
 # DeepChat
 Chatbot framework using [Huggingface](https://github.com/huggingface) transformers
 
-This is meant to be a wrapper around huggingface, or potentially other frameworks and models to make toy chatbot development easier and fun to play around with.
+This is meant to be a wrapper around huggingface, or potentially other frameworks and models to make chatbot development easier and fun to play around with.
 
 # Supported Models
 - [DialoGPT](https://huggingface.co/microsoft/DialoGPT-medium)
@@ -14,7 +14,7 @@ TBD
 ## Examples
 How to start a simple chatbot in a few lines of code using one of the pretrained Huggingface models. 
 
-```
+```python
 from deepchat import DeepChat
 
 # create DeepChat object
