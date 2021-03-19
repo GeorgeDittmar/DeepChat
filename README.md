@@ -17,7 +17,7 @@ How to start a simple chatbot in a few lines of code using one of the pretrained
 ```python
 from deepchat import DeepChat
 
-# create DeepChat object
+# create DeepChat object that uses small model and default settings
 dc = DeepChat("dialogpt", device_type="cuda")
 
 # begins the chatbot conversation
