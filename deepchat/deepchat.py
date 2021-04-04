@@ -52,7 +52,7 @@ class DeepChat(object):
     def interact(self, input=""):
         """ Interact wi"""
         bot_response_ids, bot_response = self.model.predict(
-            user_in, 
+            input, 
             self.conversation
         )
 
