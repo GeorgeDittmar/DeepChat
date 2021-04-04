@@ -17,7 +17,7 @@ class AbstractModel(ABC):
     def fine_tune(self, data):
         raise NotImplementedError()
 
-    def __get_device(self, device):
+    def _get_device(self, device):
 
         if device == "cuda":
             if not torch.cuda.is_available():
@@ -26,6 +26,6 @@ class AbstractModel(ABC):
 
         return torch.device(device)
 
-    def __decode_bot_response(self, bot_output, input_ids):
+    def _decode_bot_response(self, bot_output, input_ids):
         """decodes the output from the model"""
         return self.tokenizer.decode(bot_output[:, input_ids.shape[-1]:][0], skip_special_tokens=True)

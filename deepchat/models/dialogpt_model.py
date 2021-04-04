@@ -17,7 +17,7 @@ class DialoGPT(AbstractModel):
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.INFO)
 
-        self.device_type = self.__get_device(device_type)
+        self.device_type = self._get_device(device_type)
         self.model = AutoModelForCausalLM.from_pretrained(
             model).to(self.device_type)
         self.tokenizer = AutoTokenizer.from_pretrained(model)
@@ -48,7 +48,7 @@ class DialoGPT(AbstractModel):
                                              do_sample=True,
                                              top_p=self.top_p,
                                              num_beams=self.num_beams)
-        bot_response_decoded = self.__decode_bot_response(
+        bot_response_decoded = self._decode_bot_response(
             bot_output_ids, input_ids)
 
         return (bot_output_ids, bot_response_decoded)
