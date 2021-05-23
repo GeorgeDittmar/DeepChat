@@ -49,6 +49,17 @@ class DeepChat(object):
         """Constructs the fully qualified name for a huggingface model"""
         return DeepChat.MODELS_DICT[model] + "-" + model_size
 
+    def interact(self, input=""):
+        """ Interact wi"""
+        bot_response_ids, bot_response = self.model.predict(
+            input, 
+            self.conversation
+        )
+
+        self.conversation.update_conversation(bot_response_ids)
+
+        return bot_response
+
     def run(self):
         """ Begins a conversation with the specified chatbot model """
         while True:
@@ -59,10 +70,7 @@ class DeepChat(object):
                 print("Ending conversation. Goodbye...")
                 break
 
-            bot_response_ids, bot_response = self.model.predict(
-                user_in, self.conversation)
-
-            self.conversation.update_conversation(bot_response_ids)
+            bot_response = self.interact(user_in)
 
             print(f"Bot: {bot_response}")
 
